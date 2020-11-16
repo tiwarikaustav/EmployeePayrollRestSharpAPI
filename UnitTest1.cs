@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Net;
 
@@ -122,6 +123,35 @@ namespace EmployeePayrollUnitTestingRestSharpAPI
                 Assert.AreEqual(employeeData.name, employeeDataResponse.name);
                 Assert.AreEqual(employeeData.salary, employeeDataResponse.salary);
             });
+        }
+        /// <summary>
+        /// TC 4 -- On calling the employee rest API after the data update return the updated Employee data of the schema stored inside the database
+        /// </summary>
+        [TestMethod]
+        public void UpdateDataInEmplyeeRestAPI_ValidateUpdateSuccess()
+        {
+            /// Arrange
+            /// Adding the request to put or update data to the rest api
+            RestRequest request = new RestRequest("/employees/5", Method.PUT);
+
+            /// Instantinating a Json object to host the employee in json format
+            JObject jObject = new JObject();
+            /// Adding the data attribute with data elements
+            jObject.Add("name", "Shri");
+            jObject.Add("salary", "53000");
+            /// Adding parameter to the rest request jObject - contains the parameter list of the json database
+            request.AddParameter("application/json", jObject, ParameterType.RequestBody);
+            /// Act
+            /// Adding the data to the json server in json format
+            IRestResponse response = restClient.Execute(request);
+            /// Assert
+            Assert.AreEqual(response.StatusCode, System.Net.HttpStatusCode.OK);
+            /// Getting the recently added data as json format and then deserialise it to Employee object
+            Employee employeeDataResponse = JsonConvert.DeserializeObject<Employee>(response.Content);
+            /// Assert updated data
+            Assert.AreEqual("Shri", employeeDataResponse.name);
+            Assert.AreEqual("53000", employeeDataResponse.salary);
+            Console.WriteLine(response.Content);
         }
     }
 }
