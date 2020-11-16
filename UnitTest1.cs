@@ -72,8 +72,8 @@ namespace EmployeePayrollUnitTestingRestSharpAPI
             /// Instantinating a json object
             JObject jObject = new JObject();
             /// Adding the data attribute with data elements
-            jObject.Add("name", "Maruti");
-            jObject.Add("salary", "10000");
+            jObject.Add("name", "Anjani");
+            jObject.Add("salary", "40000");
             /// Adding parameter to the rest request
             restRequest.AddParameter("application/json", jObject, ParameterType.RequestBody);
             /// Act
@@ -82,8 +82,8 @@ namespace EmployeePayrollUnitTestingRestSharpAPI
             Assert.AreEqual(restResponse.StatusCode, HttpStatusCode.Created);
             /// Getting the recently added data as json format and then deserialise it to Employee object
             Employee employeeDateResponse = JsonConvert.DeserializeObject<Employee>(restResponse.Content);
-            Assert.AreEqual("Maruti", employeeDateResponse.name);
-            Assert.AreEqual("10000", employeeDateResponse.salary);
+            Assert.AreEqual("Anjani", employeeDateResponse.name);
+            Assert.AreEqual("40000", employeeDateResponse.salary);
         }
     }
 }
